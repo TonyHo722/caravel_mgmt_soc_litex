@@ -64,10 +64,11 @@ hex:  ${BLOCKS:=.hex}
 ## RTL
 ifeq ($(SIM),RTL)
     ifeq ($(CONFIG),caravel_user_project)
+		iverilog -V 2>&1 | tee iverilog-ver.log
 		iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
         -g2012 \
         -f$(VERILOG_PATH)/includes/includes.rtl.caravel \
-        -f$(USER_PROJECT_VERILOG)/includes/includes.rtl.$(CONFIG) -o $@ $<
+        -f$(USER_PROJECT_VERILOG)/includes/includes.rtl.$(CONFIG) -o $@ $< 2>&1 | tee iverilog.log
     else
 		iverilog -Ttyp -DFUNCTIONAL -DSIM -DUSE_POWER_PINS -DUNIT_DELAY=#1 \
 		-f $(VERILOG_PATH)/includes/includes.rtl.$(CONFIG) \
